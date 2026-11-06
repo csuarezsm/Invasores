@@ -1,0 +1,9 @@
+{
+  "appId": "com.itcanarias.invasores",
+  "appName": "Invasores espaciales",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#0a140a",
+    "adjustMarginsForEdgeToEdge": "auto"
+  }
+}
