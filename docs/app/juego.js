@@ -158,6 +158,13 @@ function enlazarControles() {
   cv.onpointerdown = ev => { if (S.ctrl === 'botones') return; arrastra = true; try { cv.setPointerCapture(ev.pointerId); } catch (e) {} inp.x = posX(ev, cv); ev.preventDefault(); };
   cv.onpointermove = ev => { if (arrastra) inp.x = posX(ev, cv); };
   cv.onpointerup = cv.onpointercancel = () => { arrastra = false; };
+  const pad = document.getElementById('ivPad'), mk = document.getElementById('ivPadM');
+  if (pad) {   // la zona de abajo: el dedo no tapa el juego
+    const mover = ev => { const r = pad.getBoundingClientRect(), f = Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width)); inp.x = f * I.W; if (mk) mk.style.left = (f * 100) + '%'; };
+    pad.onpointerdown = ev => { arrastra = true; try { pad.setPointerCapture(ev.pointerId); } catch (e) {} mover(ev); ev.preventDefault(); };
+    pad.onpointermove = ev => { if (arrastra) mover(ev); };
+    pad.onpointerup = pad.onpointercancel = () => { arrastra = false; };
+  }
   inp.fire = false; inp.dir = 0;
   const hold = (id, fn) => { const b = document.getElementById(id); if (!b) return; const on = e => { fn(true); e.preventDefault(); }, off = () => fn(false); b.onpointerdown = on; b.onpointerup = b.onpointerleave = b.onpointercancel = off; };
   hold('ivL', v => { inp.x = null; inp.dir = v ? -1 : (inp.dir === -1 ? 0 : inp.dir); });
@@ -234,9 +241,11 @@ function gameHtml(extra) {
   return `<div class="iv">
     <div class="iv-hud"><span>PUNTOS <b id="ivP">0000</b></span><span>RÉCORD <b id="ivR">0000</b></span><span>OLEADA <b id="ivW">1</b></span><span class="iv-v" id="ivV">♥♥♥</span></div>
     <div class="iv-wrap"><canvas id="ivC" class="iv-cv" width="${I.W}" height="${I.H}"></canvas><div id="ivMsg" class="iv-msg"></div><div id="ivOv" class="iv-ov hidden"></div></div>
+    ${extra || ''}
+    ${bot ? '<div class="iv-sp"></div>' : '<div id="ivPad" class="iv-pad"><span>👆 Desliza aquí para mover el cañón</span><i id="ivPadM" style="left:50%"></i></div>'}
     ${bot ? `<div class="iv-btns"><button id="ivL" class="btn-ghost">◀</button>${S.autofire ? '' : '<button id="ivF" class="btn-gold">DISPARO</button>'}<button id="ivRt" class="btn-ghost">▶</button></div>`
       : (S.autofire ? '' : '<div class="iv-btns"><button id="ivF" class="btn-gold">DISPARO</button></div>')}
-    ${extra || ''}</div>`;
+  </div>`;
 }
 function montarJuego(g, modo, nivel, cuenta) {
   RUN.g = g; RUN.modo = modo; RUN.nivel = nivel; RUN.fx = []; RUN.fin = false; RUN.pausa = false; RUN.sentP = -1; RUN.sentT = 0;

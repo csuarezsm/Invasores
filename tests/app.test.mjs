@@ -109,6 +109,14 @@ console.log('Controles');
   const der = await G(p);
   check('arrastrar a la derecha lo mueve', okDer, String(der.x));
   await p.mouse.up();
+  // la zona de abajo (el dedo no tapa el juego)
+  const pad = await p.evaluate(() => { const r = document.querySelector('#ivPad').getBoundingClientRect(); return { x: r.left, y: r.top + r.height / 2, w: r.width }; });
+  check('hay una zona táctil libre bajo el campo', pad.w > 200 && await p.evaluate(() => document.querySelector('#ivPad').getBoundingClientRect().top >= document.querySelector('#ivC').getBoundingClientRect().bottom));
+  await p.mouse.move(pad.x + pad.w * 0.5, pad.y); await p.mouse.down(); await p.mouse.move(pad.x + pad.w * 0.1, pad.y, { steps: 5 });
+  check('arrastrar en la zona de abajo mueve el cañón', await waitFor(p, () => RUN.g.cx < 50, null, 9000));
+  await p.mouse.move(pad.x + pad.w * 0.95, pad.y, { steps: 5 });
+  check('y a la derecha', await waitFor(p, () => RUN.g.cx > 150, null, 9000));
+  await p.mouse.up();
   // pausa
   await p.click('#ivPause'); await p.waitForTimeout(200);
   const t1 = (await G(p)).tick; await p.waitForTimeout(500);
