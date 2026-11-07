@@ -246,13 +246,17 @@ main:has(.gm){padding-top:8px}
 .stat4 div{background:var(--card);border-radius:12px;padding:10px 4px;text-align:center}
 .stat4 b{display:block;font-size:calc(22px * var(--fs, 1));color:var(--gold)}.stat4 span{font-size:calc(11px * var(--fs, 1));color:var(--mut)}
 /* ===== Invasores espaciales ===== */
-.iv{display:flex;flex-direction:column;gap:8px;align-items:center;min-height:calc(100svh - 130px)}
-.iv-pad{flex:1;min-height:110px;width:100%;max-width:560px;border:2px dashed var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;color:var(--mut);font-size:calc(15px * var(--fs, 1));touch-action:none;user-select:none;-webkit-user-select:none;position:relative}
+.iv{--ivh:calc(100dvh - var(--hh,104px) - 22px - env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:6px;align-items:center;height:var(--ivh);min-height:300px}
+body:has(.iv){padding-bottom:calc(8px + env(safe-area-inset-bottom))}
+body:has(.iv) main{padding-top:8px;padding-bottom:0}
+.iv-pad{flex:1;min-height:60px;width:100%;max-width:560px;border:2px dashed var(--line);border-radius:14px;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;color:var(--mut);font-size:calc(15px * var(--fs, 1));touch-action:none;user-select:none;-webkit-user-select:none;position:relative}
 .iv-pad i{position:absolute;bottom:0;top:0;width:3px;background:var(--gold);opacity:.35;border-radius:2px;pointer-events:none}
 .iv-sp{flex:1}
 .iv-hud{display:flex;justify-content:space-between;gap:6px;width:100%;max-width:560px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:calc(14px * var(--fs, 1));letter-spacing:1px;color:var(--mut)}
 .iv-hud b{color:var(--gold)}.iv-v{color:var(--red)!important;letter-spacing:2px}
-.iv-wrap{position:relative;width:min(100%,calc((100svh - 230px) * 224 / 256),560px)}
+.iv-wrap{position:relative;flex:none;width:min(100%,calc((var(--ivh) - var(--ctl,150px)) * 224 / 256),560px)}
+.iv-hud{align-items:center}
+.iv-pb{flex:none;border:1px solid var(--line);background:var(--card);color:var(--txt);border-radius:10px;padding:4px 12px;font-size:calc(16px * var(--fs, 1));line-height:1.2}
 .iv-cv{width:100%;aspect-ratio:224/256;background:#000;border:2px solid var(--line);border-radius:8px;image-rendering:pixelated;touch-action:none;display:block;user-select:none;-webkit-user-select:none}
 .iv-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;color:var(--gold);font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:900;font-size:calc(22px * var(--fs, 1))}
 .iv-msg.big{font-size:calc(64px * var(--fs, 1));text-shadow:0 0 18px var(--gold)}
@@ -261,14 +265,14 @@ main:has(.gm){padding-top:8px}
 .ov-t{font-size:calc(20px * var(--fs, 1));font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px}
 .ov-n{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:calc(44px * var(--fs, 1));font-weight:900;color:var(--txt);margin:6px 0}
 .iv-btns{display:flex;gap:8px;width:100%;max-width:560px}
-.iv-btns button{flex:1;padding:26px 8px;font-weight:800;font-size:calc(18px * var(--fs, 1));touch-action:none;user-select:none;-webkit-user-select:none}
+.iv-btns button{flex:1;padding:18px 8px;font-weight:800;font-size:calc(18px * var(--fs, 1));touch-action:none;user-select:none;-webkit-user-select:none}
 .iv-rec{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:calc(34px * var(--fs, 1));font-weight:900;color:var(--gold);letter-spacing:3px}
 .iv-rank{width:100%;max-width:560px}
 .rk{display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:var(--card);border-radius:10px;margin-bottom:5px}
 .rk.yo{border:1px solid var(--gold)}
 .rk b{font-family:ui-monospace,Menlo,Consolas,monospace;color:var(--gold);letter-spacing:1px}
 .iv-ov .acts{display:flex;gap:8px;justify-content:center}
-@media (orientation:landscape) and (max-height:520px){.iv-wrap{width:min(100%,calc((100svh - 150px) * 224 / 256),560px)}}
+@media (orientation:landscape) and (max-height:520px){.iv-wrap{width:min(100%,calc((var(--ivh) - 40px) * 224 / 256),560px)}}
 </style>
 </head>
 <body>
@@ -357,7 +361,7 @@ function openThemes() {
   AvisoTurno.enlazar();
 }
 
-const APP_VERSION = '1.0.2';
+const APP_VERSION = '1.0.3';
 const REPO = 'csuarezsm/Invasores';
 const MAX_ARCHIVE = 500;
 const uid = () => Math.random().toString(36).slice(2, 10);

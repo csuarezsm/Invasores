@@ -2,7 +2,7 @@
 
 El arcade de siempre para Android e iPhone: defiende la Tierra de la formación de invasores **en solitario** (3 dificultades) o en un **reto en línea** con amigos (la misma oleada para todos, gana quien más puntos consigue).
 App Capacitor + web (`www/`). Todos los datos se guardan en el móvil; solo el reto en línea usa el servidor de juegos (nombre y puntos, sin guardarlos).
-Paquete: `com.itcanarias.invasores` · versión 1.0.1
+Paquete: `com.itcanarias.invasores` · versión 1.0.3
 
 **iPhone y navegadores**: la misma app se publica como versión web instalable en https://csuarezsm.github.io/Invasores/app/ (GitHub Pages, carpeta `docs/app`, copia de `www/`). En Safari: Compartir → «Añadir a pantalla de inicio». Tras cambiar `www/`, ejecuta `npm run web`.
 

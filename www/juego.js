@@ -187,7 +187,7 @@ function enlazarControles() {
 function togglePausa() {
   if (RUN.modo !== 'solo' || !RUN.g || RUN.g.fin) return;
   RUN.pausa = !RUN.pausa;
-  const b = $('#ivPause'); if (b) b.textContent = RUN.pausa ? '▶ Seguir' : '⏸ Pausa';
+  const b = $('#ivPause'); if (b) b.textContent = RUN.pausa ? '▶' : '⏸';
   const m = $('#ivMsg'); if (m) { m.textContent = RUN.pausa ? 'Pausa' : ''; m.classList.toggle('big', RUN.pausa); }
 }
 
@@ -236,10 +236,10 @@ function startAi() {
 }
 
 /* ================= La pantalla de juego (solo y reto) ================= */
-function gameHtml(extra) {
+function gameHtml(extra, pausa) {
   const bot = S.ctrl === 'botones';
   return `<div class="iv">
-    <div class="iv-hud"><span>PUNTOS <b id="ivP">0000</b></span><span>RÉCORD <b id="ivR">0000</b></span><span>OLEADA <b id="ivW">1</b></span><span class="iv-v" id="ivV">♥♥♥</span></div>
+    <div class="iv-hud"><span>PUNTOS <b id="ivP">0000</b></span><span>RÉCORD <b id="ivR">0000</b></span><span>OLEADA <b id="ivW">1</b></span><span class="iv-v" id="ivV">♥♥♥</span>${pausa ? '<button class="iv-pb" id="ivPause" aria-label="Pausa">⏸</button>' : ''}</div>
     <div class="iv-wrap"><canvas id="ivC" class="iv-cv" width="${I.W}" height="${I.H}"></canvas><div id="ivMsg" class="iv-msg"></div><div id="ivOv" class="iv-ov hidden"></div></div>
     ${extra || ''}
     ${bot ? '<div class="iv-sp"></div>' : '<div id="ivPad" class="iv-pad"><span>👆 Desliza aquí para mover el cañón</span><i id="ivPadM" style="left:50%"></i></div>'}
@@ -247,7 +247,10 @@ function gameHtml(extra) {
       : (S.autofire ? '' : '<div class="iv-btns"><button id="ivF" class="btn-gold">DISPARO</button></div>')}
   </div>`;
 }
+function ajustaAlto() { const hd = document.querySelector('header'); if (hd) document.documentElement.style.setProperty('--hh', hd.offsetHeight + 'px'); const iv = document.querySelector('.iv'); if (iv) iv.style.setProperty('--ctl', (S.ctrl === 'botones' ? (S.autofire ? 120 : 130) : (S.autofire ? 120 : 140)) + 'px'); }
+window.addEventListener('resize', ajustaAlto);
 function montarJuego(g, modo, nivel, cuenta) {
+  ajustaAlto();
   RUN.g = g; RUN.modo = modo; RUN.nivel = nivel; RUN.fx = []; RUN.fin = false; RUN.pausa = false; RUN.sentP = -1; RUN.sentT = 0;
   RUN.cv = $('#ivC'); RUN.col = colores(); RUN.cuenta = cuenta || 0; RUN.nCuenta = null;
   RUN.inp.x = null; RUN.inp.dir = 0; RUN.inp.fire = false;
@@ -257,7 +260,7 @@ function renderGame() {
   const gm = S.game; if (!gm) return;
   if (RUN.g === gm.g && RUN.on) return;
   $('#subtitle').textContent = 'Partida clásica · ' + LEVELS[gm.nivel].name;
-  $('#app').innerHTML = gameHtml('<div class="iv-btns" style="margin-top:2px"><button class="btn-ghost sm" id="ivPause">⏸ Pausa</button></div>');
+  $('#app').innerHTML = gameHtml('', true);
   $('#ivPause').onclick = togglePausa;
   montarJuego(gm.g, 'solo', gm.nivel, 0);
 }
