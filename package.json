@@ -1,6 +1,6 @@
 {
   "name": "invasores",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "author": "IT Canarias",
   "license": "UNLICENSED",
@@ -8,7 +8,7 @@
   "scripts": {
     "sync": "npx cap sync android",
     "open": "npx cap open android",
-    "test": "node tests/motor.test.mjs && node tests/app.test.mjs",
+    "test": "node tests/motor.test.mjs && node tests/app.test.mjs && node tests/idiomas.test.mjs",
     "web": "bash tools/publicar-web.sh",
     "icons": "npx @capacitor/assets generate --android --iconBackgroundColor '#050a05' --splashBackgroundColor '#050a05'"
   },
